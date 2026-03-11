@@ -20,7 +20,9 @@
 ## 발표 자료
 
 - PPT: 추가 예정
-- 포스터: (docs/Gemini_Generated_Image_ibdy6yibdy6yibdy.png)
+- 포스터: 
+
+![팀메이커 포스터](docs/poster.png)
 
 ## 개발 개요
 
