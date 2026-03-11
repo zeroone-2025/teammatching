@@ -1,4 +1,5 @@
 # TeamMaker
+https://teammatching.vercel.app/
 
 > 개발자와 비개발자의 역할을 자동으로 배분해 균형 잡힌 팀을 구성해주는 스마트 팀 빌딩 도구
 
@@ -19,7 +20,7 @@
 
 ## 발표 자료
 
-- PPT: 추가 예정
+- PPT 다운로드 링크: (docs/ZEROTIME_TeamMaker.pdf)
 - 포스터: 
 
 ![팀메이커 포스터](docs/poster.png)
