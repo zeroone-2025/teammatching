@@ -20,7 +20,7 @@ https://teammatching.vercel.app/
 
 ## 발표 자료
 
-- PPT 다운로드 링크: (docs/ZEROTIME_TeamMaker.pdf)
+- PPT 다운로드 링크: 
 - 포스터: 
 
 ![팀메이커 포스터](docs/poster.png)
