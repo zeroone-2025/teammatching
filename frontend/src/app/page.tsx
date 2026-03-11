@@ -131,39 +131,23 @@ export default function Home() {
                   <CardTitle className="text-base">{team.name}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  <div className="flex items-center gap-3 text-sm">
-                    <span className="w-20 text-muted-foreground">🎯 기획</span>
-                    <span className="font-medium">{team.기획.name}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <span className="w-20 text-muted-foreground">💻 개발</span>
-                    <span className="font-medium">{team.개발.name}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <span className="w-20 text-muted-foreground">📢 마케팅</span>
-                    <span className="font-medium">{team.마케팅.name}</span>
-                  </div>
+                  {(["기획", "마케팅", "개발"] as const).map((role) => {
+                    const ROLE_ICON = { 기획: "🎯", 마케팅: "📢", 개발: "💻" };
+                    const base = role === "기획" ? team.기획 : role === "마케팅" ? team.마케팅 : team.개발;
+                    const extras = team.extra.filter((e) => e.role === role).map((e) => e.member);
+                    const all = [base, ...extras];
+                    return (
+                      <div key={role} className="flex items-center gap-3 text-sm">
+                        <span className="w-20 shrink-0 text-muted-foreground">{ROLE_ICON[role]} {role}</span>
+                        <span className="font-medium">{all.map((m) => m.name).join(", ")}</span>
+                      </div>
+                    );
+                  })}
                 </CardContent>
               </Card>
             ))}
           </div>
 
-          {result.unassigned.length > 0 && (
-            <Card className="border border-dashed">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base text-muted-foreground">미배정</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-2">
-                  {result.unassigned.map((m) => (
-                    <Badge key={m.id} variant="outline" className="text-sm px-3 py-1">
-                      {m.name}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
         </div>
       )}
     </div>
