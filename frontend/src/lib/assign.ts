@@ -11,6 +11,7 @@ export interface Team {
   기획: Member;
   마케팅: Member;
   개발: Member;
+  extra: { member: Member; role: Role }[];
 }
 
 const TEAM_NAMES = ["제로", "원", "투", "쓰리", "포", "파이브", "식스", "세븐", "에잇", "나인"];
@@ -50,7 +51,17 @@ export function assignTeams(members: Member[]): { teams: Team[]; unassigned: Mem
     기획: planGroup[i],
     마케팅: mktGroup[i],
     개발: devGroup[i],
+    extra: [],
   }));
 
-  return { teams, unassigned };
+  const extras = pool.slice(numTeams * 2);
+  extras.forEach((m, i) => {
+    const availableRoles: Role[] = m.isDeveloper
+      ? ["기획", "마케팅", "개발"]
+      : ["기획", "마케팅"];
+    const role = availableRoles[Math.floor(Math.random() * availableRoles.length)];
+    teams[i % numTeams].extra.push({ member: m, role });
+  });
+
+  return { teams, unassigned: [] };
 }
