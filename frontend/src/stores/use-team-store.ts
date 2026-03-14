@@ -16,6 +16,7 @@ interface TeamState {
   lockedTeamNames: string[];
   addMember: (name: string, isDeveloper: boolean) => void;
   removeMember: (id: string) => void;
+  toggleDeveloper: (id: string) => void;
   assign: () => void;
   reset: () => void;
   setTopic: (topic: string) => void;
@@ -61,6 +62,15 @@ export const useTeamStore = create<TeamState>()(
       removeMember: (id) =>
         set((state) => ({
           members: state.members.filter((m) => m.id !== id),
+          result: null,
+          lockedTeamNames: [],
+        })),
+
+      toggleDeveloper: (id) =>
+        set((state) => ({
+          members: state.members.map((m) =>
+            m.id === id ? { ...m, isDeveloper: !m.isDeveloper } : m
+          ),
           result: null,
           lockedTeamNames: [],
         })),

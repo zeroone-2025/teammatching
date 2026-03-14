@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTeamStore, MemberSlot } from "@/stores/use-team-store";
 import { X, Shuffle, RotateCcw, Lock, Unlock, Copy, Check } from "lucide-react";
+import { TimerSection } from "@/components/TimerSection";
 
 const ROLE_ICON = { 기획: "🎯", 마케팅: "📢", 개발: "💻" } as const;
 
@@ -26,6 +27,7 @@ export default function Home() {
     lockedTeamNames,
     addMember,
     removeMember,
+    toggleDeveloper,
     assign,
     reset,
     setTopic,
@@ -97,7 +99,7 @@ export default function Home() {
   const canAssign = members.length >= 3;
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-2xl">
+    <div className="container mx-auto px-4 py-12 max-w-5xl">
       {/* 헤더 */}
       <div className="text-center mb-6">
         <div className="flex justify-center mb-4">
@@ -116,6 +118,17 @@ export default function Home() {
           </p>
         </div>
       </div>
+
+      {/* 헤더 아래: lg에서 좌우 분할 */}
+      <div className="lg:grid lg:grid-cols-[360px_1fr] lg:gap-6 lg:items-start">
+
+      {/* 왼쪽: 타이머 (sticky) */}
+      <div className="lg:sticky lg:top-4">
+        <TimerSection />
+      </div>
+
+      {/* 오른쪽: 팀 매칭 전체 */}
+      <div>
 
       {/* 오늘의 주제 */}
       <div className="mb-4">
@@ -160,9 +173,11 @@ export default function Home() {
                 <li key={m.id} className="flex items-center justify-between rounded-md border px-3 py-2 text-sm">
                   <span className="font-medium">{m.name}</span>
                   <div className="flex items-center gap-2">
-                    <Badge variant={m.isDeveloper ? "default" : "secondary"} className="text-xs">
-                      {m.isDeveloper ? "개발자" : "비개발자"}
-                    </Badge>
+                    <button type="button" onClick={() => toggleDeveloper(m.id)}>
+                      <Badge variant={m.isDeveloper ? "default" : "secondary"} className="text-xs cursor-pointer">
+                        {m.isDeveloper ? "개발자" : "비개발자"}
+                      </Badge>
+                    </button>
                     <button
                       onClick={() => removeMember(m.id)}
                       className="text-muted-foreground hover:text-destructive transition-colors"
@@ -219,6 +234,7 @@ export default function Home() {
 
       {/* 결과 영역 */}
       {result && (
+
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
@@ -318,6 +334,8 @@ export default function Home() {
           </div>
         </div>
       )}
+      </div>{/* 오른쪽 끝 */}
+      </div>{/* 그리드 끝 */}
     </div>
   );
 }
