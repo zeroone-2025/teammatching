@@ -13,6 +13,17 @@ import { TimerSection } from "@/components/TimerSection";
 
 const ROLE_ICON = { 기획: "🎯", 마케팅: "📢", 개발: "💻" } as const;
 
+const TEAM_PASTEL_BG = [
+  "#FFF0F3", // 연분홍
+  "#F0F4FF", // 연파랑
+  "#F0FFF4", // 연초록
+  "#FFFBEB", // 연노랑
+  "#F5F0FF", // 연보라
+  "#FFF4ED", // 연주황
+  "#EFFFFE", // 연청록
+  "#FFF0FB", // 연자주
+];
+
 export default function Home() {
   const [name, setName] = useState("");
   const [isDeveloper, setIsDeveloper] = useState(false);
@@ -99,7 +110,7 @@ export default function Home() {
   const canAssign = members.length >= 3;
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-5xl">
+    <div className="container mx-auto px-4 py-12 max-w-7xl">
       {/* 헤더 */}
       <div className="text-center mb-6">
         <div className="flex justify-center mb-4">
@@ -120,7 +131,7 @@ export default function Home() {
       </div>
 
       {/* 헤더 아래: lg에서 좌우 분할 */}
-      <div className="lg:grid lg:grid-cols-[360px_1fr] lg:gap-6 lg:items-start">
+      <div className="lg:grid lg:grid-cols-[600px_1fr] lg:gap-6 lg:items-start">
 
       {/* 왼쪽: 타이머 (sticky) */}
       <div className="lg:sticky lg:top-4">
@@ -261,7 +272,8 @@ export default function Home() {
               return (
                 <Card
                   key={team.name}
-                  className={`border transition-colors ${isLocked ? "border-primary/50 bg-primary/5" : ""}`}
+                  className={`border transition-colors ${isLocked ? "border-primary/50" : ""}`}
+                  style={{ backgroundColor: isLocked ? undefined : TEAM_PASTEL_BG[teamIndex % TEAM_PASTEL_BG.length] }}
                 >
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">

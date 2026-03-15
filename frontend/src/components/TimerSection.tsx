@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTimerStore } from "@/stores/use-timer-store";
 import { cn } from "@/lib/utils";
+import { playPhaseChange, playWarning, playComplete } from "@/lib/sound";
 import { Play, Pause, RotateCcw, SkipForward, RefreshCw } from "lucide-react";
 
 function formatTime(seconds: number) {
@@ -65,13 +66,22 @@ export function TimerSection() {
 
     if (status === "done" && prevStatus !== "done") {
       toast.success("제로톤 완료! 🎉", { duration: 5000 });
+      playComplete();
     } else if (currentPhaseIndex !== prevIndex && status === "running") {
       toast.success(`${phases[currentPhaseIndex].label} 페이즈 시작!`);
+      playPhaseChange();
     }
 
     prevPhaseIndexRef.current = currentPhaseIndex;
     prevStatusRef.current = status;
   }, [currentPhaseIndex, status, phases]);
+
+  // 60초 경고음
+  useEffect(() => {
+    if (secondsLeft === 60 && status === "running") {
+      playWarning();
+    }
+  }, [secondsLeft, status]);
 
   const currentPhase = phases[currentPhaseIndex];
   const totalSec = currentPhase.durationMin * 60;
@@ -105,7 +115,7 @@ export function TimerSection() {
 
   return (
     <Card>
-      <CardContent className="pt-5 pb-5 space-y-4">
+      <CardContent className="pt-8 pb-8 space-y-6">
         {/* Phase Tabs */}
         <Tabs value={String(currentPhaseIndex)}>
           <TabsList className="w-full">
@@ -129,7 +139,7 @@ export function TimerSection() {
         <div className="text-center">
           <span
             className={cn(
-              "text-6xl font-mono font-bold tabular-nums tracking-tight",
+              "text-8xl font-mono font-bold tabular-nums tracking-tight",
               isLowTime ? "text-destructive" : "text-foreground",
               status === "done" && "text-muted-foreground"
             )}
@@ -139,10 +149,10 @@ export function TimerSection() {
         </div>
 
         {/* Progress Bar */}
-        <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+        <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
           <div
             className={cn(
-              "h-2 rounded-full transition-all duration-1000",
+              "h-3 rounded-full transition-all duration-1000",
               isLowTime ? "bg-destructive" : "bg-primary"
             )}
             style={{ width: `${Math.min(progress * 100, 100)}%` }}
